@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
     EditText goal;
     Button saveButton;
     DatabaseReference databaseReference;
-//    private SeekBar bin1SeekBar;
-    SeekBar bin1SeekBar = findViewById(R.id.bin1SeekBar);
+////    private SeekBar bin1SeekBar;
+//    SeekBar bin1SeekBar = findViewById(R.id.bin1SeekBar);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     int loadValue = Integer.parseInt(input1);
                     int goalValue = Integer.parseInt(input3);
 
-                    double percentage = (double) loadValue / goalValue;
+                    double percentage = (double) loadValue/goalValue*100;
 
                     Map<String, Object> dataMap = new HashMap<>();
                     dataMap.put("weight", input1);
