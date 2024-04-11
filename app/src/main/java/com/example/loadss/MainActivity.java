@@ -1,5 +1,6 @@
 package com.example.loadss;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     EditText binID;
     EditText goal;
     Button saveButton;
+    Button toSideButton;
     DatabaseReference databaseReference;
 ////    private SeekBar bin1SeekBar;
 //    SeekBar bin1SeekBar = findViewById(R.id.bin1SeekBar);
@@ -35,30 +37,37 @@ public class MainActivity extends AppCompatActivity {
         binID = findViewById(R.id.binID);
         goal = findViewById(R.id.goal);
         saveButton = findViewById(R.id.pushToFirebase);
-
+        toSideButton = findViewById(R.id.toSide);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        toSideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SideActivity.class);
+                startActivity(intent);
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input1 = load.getText().toString();
-                String input2 = binID.getText().toString();
-                String input3 = goal.getText().toString();
+                String dailyWeight = MainActivity.this.load.getText().toString();
+                String binID = MainActivity.this.binID.getText().toString();
+                String goal = MainActivity.this.goal.getText().toString();
 
                 try {
-                    int loadValue = Integer.parseInt(input1);
-                    int goalValue = Integer.parseInt(input3);
+                    int loadValue = Integer.parseInt(dailyWeight);
+                    int goalValue = Integer.parseInt(goal);
 
-                    double percentage = (double) loadValue/goalValue*100;
+                    double dailyPercent = (double) loadValue/goalValue*100;
 
                     Map<String, Object> dataMap = new HashMap<>();
-                    dataMap.put("weight", input1);
-                    dataMap.put("percentage", percentage);
+                    dataMap.put("weight", dailyWeight);
+                    dataMap.put("dailyPercent", dailyPercent);
 
-//                    databaseReference.child("0001").child("editText2").setValue(input2);
-                    databaseReference.child(input2).updateChildren(dataMap);
+//                    databaseReference.child("0001").child("editText2").setValue(binID);
+                    databaseReference.child(binID).updateChildren(dataMap);
 
                     Toast.makeText(MainActivity.this, "Data uploaded to Firebase", Toast.LENGTH_SHORT).show();
                 } catch (NumberFormatException e) {
